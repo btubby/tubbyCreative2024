@@ -10,6 +10,9 @@ import titleImage from './tubbycreativeblack.png'
 
 import { SGithub } from 'vue-socials'
 
+import PhotoSwipeLightbox from 'photoswipe/lightbox'
+import 'photoswipe/style.css'
+
 // const access_token = 'IGQVJVX3ZAPVEpjV0R3TmU1SzBoN0JFUWxRUHk0REJTekNYeWxkSXVDT0VlTDVGR2JldVd4VUJUb1JjV2h1MlZAad1FwWTN2VUo2TTB6eDRHOHZAZAc19VWmM4ZAjdkRHlxT3hKMkpnYmtBSktxc2ZArUVk1ZAwZDZD'
 // const url = 'https://graph.instagram.com/me/media?fields=id,username,caption,media_url'
 // const username = 'btubbz'
@@ -20,6 +23,7 @@ const count = ref(0)
 const columns = ref(3)
 const spacing = ref(5)
 const titleOpacity = ref(1)
+const getPage = ref(1)
 
 const url =
   'https://api.flickr.com/services/rest/?method=flickr.photos.search' +
@@ -29,19 +33,20 @@ const url =
   // '&tag_mode=all' +
   '&extras=tags,date_upload,date_taken,media,url_n,url_l,url_z,url_o' +
   '&per_page=100' +
-  '&page=1' +
+  //'&page=' +
+  // getPage.value +
   '&format=json' +
   '&nojsoncallback=1'
 
-// const onClick = payload => {
-//   console.log(payload.photo)
-// }
+const onClick = payload => {
+  console.log(payload.photo)
+}
 
 const processFickrImagesOrVideo = entry => {
   return {
     media: entry.media,
     id: entry.id,
-    src: entry.url_z,
+    src: entry.url_l,
     hires: entry.url_l,
     height: parseInt(entry.height_l),
     width: parseInt(entry.width_l),
@@ -52,46 +57,44 @@ const processFickrImagesOrVideo = entry => {
 
 const listenScrollEvent = e => {
   if (window.scrollY > 100) {
-    console.log('0.9')
     titleOpacity.value = 0.9
   }
   if (window.scrollY > 200) {
-    console.log('0.7')
     titleOpacity.value = 0.7
   }
   if (window.scrollY > 400) {
-    console.log('0.5')
     titleOpacity.value = 0.5
   }
   if (window.scrollY > 600) {
     titleOpacity.value = 0.3
   }
-  // console.log(`Y: ${window.scrollY} opacity: ${opacity}`);
-  // this.setState({ opacity: opacity })
 
   // Implement infinite scroll
   const bottom =
     Math.ceil(window.innerHeight + window.scrollY) >=
     document.documentElement.scrollHeight
+
   if (bottom) {
-    // console.log(`at the bottom ${this.state.nextpage}`);
-    this.__fetchInsta(this.state.nextpage)
+    console.log(`at the bottom of page ` + getPage.value)
+    var newPage = getPage.value + 1
+    getPage.value = newPage
+    console.log(`loading page ` + newPage)
+    fetchFlickr(newPage)
   }
 }
 
-onMounted(() => {
-  fetch(url)
+const fetchFlickr = page => {
+  fetch(url + '&page=' + page)
     .then(res => res.json())
     .then(result => {
-      console.log(result.photos.photo)
       images.value = result.photos.photo.map(processFickrImagesOrVideo)
-      console.log(images.value.length)
     })
+}
+onMounted(() => {
+  console.log(url)
+  fetchFlickr(1)
 
   window.addEventListener('scroll', listenScrollEvent)
-  // document
-  //   .getElementsByClassName('bm-menu')[0]
-  //   .addEventListener('click', function (event) {})
 })
 </script>
 
@@ -113,8 +116,8 @@ onMounted(() => {
         id="demo"
         layout="columns"
         :photos="images"
-        :photo-renderer="CustomPhotoSwipeAdapter"
         :spacing="spacing"
+        :photo-renderer="CustomPhotoSwipeAdapter"
         v-if="images.length"
       />
     </div>
@@ -135,8 +138,6 @@ onMounted(() => {
 }
 .view {
   margin: 0 auto;
-  /* padding: 1rem; */
-  /* max-width: 1200px; */
 }
 </style>
 

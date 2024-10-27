@@ -15,9 +15,9 @@ const largePhoto = computed(() => props.photo.srcSet?.[0] ?? props.photo)
     target="_blank"
     rel="noopener noreferrer"
   >
-    <span class="photo-meta">
+    <!-- <span class="photo-meta">
       <a href="{{largePhoto.src}}">{{ largePhoto.datetaken.split(' ')[0] }}</a>
-    </span>
+    </span> -->
     <slot />
   </a>
 </template>

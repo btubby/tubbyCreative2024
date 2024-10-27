@@ -9,6 +9,7 @@ import {
   nextTick,
 } from 'vue'
 import PhotoSwipeLightbox, { type PhotoSwipeOptions } from 'photoswipe/lightbox'
+// import './bt_photoswipe.css'
 import 'photoswipe/style.css'
 
 export type UsePhotoSwipe = {
@@ -21,6 +22,7 @@ export const usePhotoSwipe = (
   const lightbox = ref<PhotoSwipeLightbox>()
 
   const init = () => {
+    console.log('lightbox')
     destroy()
     const options = toValue(pswpOptions ?? {})
     lightbox.value = new PhotoSwipeLightbox({
