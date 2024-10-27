@@ -4,7 +4,11 @@ import { PhotoAlbum } from 'vue-photo-album'
 import usePhotoSwipe from './usePhotoSwipe.ts'
 import CustomPhotoSwipeAdapter from './CustomPhotoSwipeAdapter.vue'
 
+import { Reveal } from 'vue3-burger-menu' // import the CSS transitions you wish to use, in this case we are using `Slide`
+
 import titleImage from './tubbycreativeblack.png'
+
+import { SGithub } from 'vue-socials'
 
 // const access_token = 'IGQVJVX3ZAPVEpjV0R3TmU1SzBoN0JFUWxRUHk0REJTekNYeWxkSXVDT0VlTDVGR2JldVd4VUJUb1JjV2h1MlZAad1FwWTN2VUo2TTB6eDRHOHZAZAc19VWmM4ZAjdkRHlxT3hKMkpnYmtBSktxc2ZArUVk1ZAwZDZD'
 // const url = 'https://graph.instagram.com/me/media?fields=id,username,caption,media_url'
@@ -92,22 +96,43 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="title_container">
-    <img id="title-image" :src="titleImage" />
-  </div>
-  <div class="view">
-    <PhotoAlbum
-      id="demo"
-      layout="columns"
-      :photos="images"
-      :photo-renderer="CustomPhotoSwipeAdapter"
-      :spacing="spacing"
-      v-if="images.length"
-    />
-  </div>
+  <Reveal>
+    <span>Visualiser</span>
+    <br />
+    <span>Bass Guitarist</span>
+    <br />
+    <span>Call Will on 07989742643</span>
+  </Reveal>
+
+  <main id="page-wrap">
+    <div id="title_container">
+      <img id="title-image" :src="titleImage" />
+    </div>
+    <div class="view">
+      <PhotoAlbum
+        id="demo"
+        layout="columns"
+        :photos="images"
+        :photo-renderer="CustomPhotoSwipeAdapter"
+        :spacing="spacing"
+        v-if="images.length"
+      />
+    </div>
+  </main>
 </template>
 
-<style scoped>
+<style>
+.bm-menu {
+  z-index: 1100 !important;
+}
+.bm-burger-bars {
+  background: #e94375 !important;
+}
+
+.bm-burger-button {
+  z-index: 1000;
+  top: 45px !important;
+}
 .view {
   margin: 0 auto;
   /* padding: 1rem; */
@@ -120,7 +145,7 @@ onMounted(() => {
   position: fixed;
   top: 20px;
   right: 0px;
-  z-index: 1000;
+  z-index: 100;
   height: 110px;
   text-align: center;
 }

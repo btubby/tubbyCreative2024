@@ -16,7 +16,9 @@
   "dependencies": {
     "photoswipe": "^5.4.4",
     "vue": "^3.5.12",
-    "vue-photo-album": "^1.2.4"
+    "vue-photo-album": "^1.2.4",
+    "vue-socials": "^2.0.5",
+    "vue3-burger-menu": "^1.1.1"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
