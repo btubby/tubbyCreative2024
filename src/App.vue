@@ -56,9 +56,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- <div id="title_container">
+  <div id="title_container">
     <img id="title-image" :src="titleImage" />
-  </div> -->
+  </div>
   <div class="view">
     <PhotoAlbum
       id="demo"
