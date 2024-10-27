@@ -9,12 +9,14 @@ import titleImage from './tubbycreativeblack.png'
 // const access_token = 'IGQVJVX3ZAPVEpjV0R3TmU1SzBoN0JFUWxRUHk0REJTekNYeWxkSXVDT0VlTDVGR2JldVd4VUJUb1JjV2h1MlZAad1FwWTN2VUo2TTB6eDRHOHZAZAc19VWmM4ZAjdkRHlxT3hKMkpnYmtBSktxc2ZArUVk1ZAwZDZD'
 // const url = 'https://graph.instagram.com/me/media?fields=id,username,caption,media_url'
 // const username = 'btubbz'
-const images = ref([])
 usePhotoSwipe({ gallery: '#demo', children: 'a' })
 
+const images = ref([])
 const count = ref(0)
 const columns = ref(3)
 const spacing = ref(5)
+const titleOpacity = ref(1)
+
 const url =
   'https://api.flickr.com/services/rest/?method=flickr.photos.search' +
   '&api_key=52f7e77ccc225a2c6cda920bb6173fb5' +
@@ -44,6 +46,35 @@ const processFickrImagesOrVideo = entry => {
   }
 }
 
+const listenScrollEvent = e => {
+  if (window.scrollY > 100) {
+    console.log('0.9')
+    titleOpacity.value = 0.9
+  }
+  if (window.scrollY > 200) {
+    console.log('0.7')
+    titleOpacity.value = 0.7
+  }
+  if (window.scrollY > 400) {
+    console.log('0.5')
+    titleOpacity.value = 0.5
+  }
+  if (window.scrollY > 600) {
+    titleOpacity.value = 0.3
+  }
+  // console.log(`Y: ${window.scrollY} opacity: ${opacity}`);
+  // this.setState({ opacity: opacity })
+
+  // Implement infinite scroll
+  const bottom =
+    Math.ceil(window.innerHeight + window.scrollY) >=
+    document.documentElement.scrollHeight
+  if (bottom) {
+    // console.log(`at the bottom ${this.state.nextpage}`);
+    this.__fetchInsta(this.state.nextpage)
+  }
+}
+
 onMounted(() => {
   fetch(url)
     .then(res => res.json())
@@ -52,6 +83,11 @@ onMounted(() => {
       images.value = result.photos.photo.map(processFickrImagesOrVideo)
       console.log(images.value.length)
     })
+
+  window.addEventListener('scroll', listenScrollEvent)
+  // document
+  //   .getElementsByClassName('bm-menu')[0]
+  //   .addEventListener('click', function (event) {})
 })
 </script>
 
@@ -80,6 +116,19 @@ onMounted(() => {
 </style>
 
 <style scoped>
+#title_container {
+  position: fixed;
+  top: 20px;
+  right: 0px;
+  z-index: 1000;
+  height: 110px;
+  text-align: center;
+}
+#title-image {
+  width: 80%;
+  opacity: v-bind('titleOpacity');
+}
+
 @media (min-width: 1024px) {
 }
 </style>
